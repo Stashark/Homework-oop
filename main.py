@@ -16,6 +16,29 @@ class Student:
         else:
             return 'Ошибка'
 
+    def average_grades(self):
+        all_grades = [grade for grades_list in self.grades.values() for grade in grades_list]
+        if not all_grades:
+            return None
+        return round(sum(all_grades) / len(all_grades), 1)
+
+    def __str__(self):
+        return (f"Имя: {self.name}"
+                f"Фамилия: {self.surname}"
+                f"Средняя оценка за домашние задания: {self.average_grades}"
+                f"Курсы в процессе изучения: {self.courses_in_progress}"
+                f"Завершенные курсы:{self.finished_courses}"
+                )
+
+    def __eq__(self, other):
+        return self.average_grades() == other.average_grades()
+
+    def __gt__(self, other):
+        return self.average_grades() > other.average_grades()
+
+    def __lt__(self, other):
+        return self.average_grades() < other.average_grades()
+
 
 class Mentor:
     def __init__(self, name, surname):
@@ -28,6 +51,25 @@ class Lecturer(Mentor):
     def __init__(self, name, surname):
         super().__init__(name, surname)
         self.grades ={}
+
+    def average_grades(self):
+        all_grades = [grade for grades_list in self.grades.values() for grade in grades_list]
+        if not all_grades:
+            return None
+        return round(sum(all_grades) / len(all_grades), 1)
+
+    def __str__(self):
+        average_grades = self.average_grades
+        return f'Имя: {self.name}\nФамилия: {self.surname}\nСредняя оценка за лекции: {self.average_grades}'
+
+    def __eq__(self, other):
+        return self.average_grades() == other.average_grades()
+
+    def __gt__(self, other):
+        return self.average_grades() > other.average_grades()
+
+    def __lt__(self, other):
+        return self.average_grades() < other.average_grades()
 
 
 class Reviewer(Mentor):
@@ -43,19 +85,5 @@ class Reviewer(Mentor):
         else:
             return 'Ошибка'
 
-
-
-lecturer = Lecturer('Иван', 'Иванов')
-reviewer = Reviewer('Пётр', 'Петров')
-student = Student('Алёхина', 'Ольга', 'Ж')
-
-student.courses_in_progress += ['Python', 'Java']
-lecturer.courses_attached += ['Python', 'C++']
-reviewer.courses_attached += ['Python', 'C++']
-
-print(student.rate_lecture(lecturer, 'Python', 7))  # None
-print(student.rate_lecture(lecturer, 'Java', 8))  # Ошибка
-print(student.rate_lecture(lecturer, 'С++', 8))  # Ошибка
-print(student.rate_lecture(reviewer, 'Python', 6))  # Ошибка
-
-print(lecturer.grades)  # {'Python': [7]}
+    def __str__(self):
+        return f'Имя: {self.name}\nФамилия: {self.surname}'
